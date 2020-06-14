@@ -14,51 +14,41 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $questions = Question::with('options')->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $questions;
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Question
      */
     public function store(Request $request)
     {
-        //
+        $question = new Question;
+
+        $question->survey_id = $request->input('survey_id');
+        $question->content = $request->input('content');
+        $question->question_type_id = $request->input('question_type_id');
+
+        if ($question->save()){
+            return $question;
+        }
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function show(Question $question)
+    public function show($id)
     {
-        //
+        return Question::with('options')->where('id', $id)->get();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Question $question)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -78,8 +68,12 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Question $question)
+    public function destroy($id)
     {
-        //
+        $question = Question::findOrFail($id);
+
+        if($question->delete()){
+            return $question;
+        }
     }
 }
