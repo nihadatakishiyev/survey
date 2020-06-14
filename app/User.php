@@ -38,7 +38,7 @@ class User extends Authenticatable
     ];
 
     public function survey(){
-        return $this->hasMany('App\Survey', 'id');
+        return $this->hasMany('App\Survey');
     }
 
     public function answers(){

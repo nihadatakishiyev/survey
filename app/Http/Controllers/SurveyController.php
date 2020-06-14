@@ -10,7 +10,7 @@ class SurveyController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function index()
     {
@@ -19,48 +19,37 @@ class SurveyController extends Controller
         return $surveys;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return survey
      */
     public function store(Request $request)
     {
-        //
+        $survey = new survey;
+
+        $survey->user_id = $request->input('user_id');
+        $survey->name = $request->input('name');
+        $survey->description = $request->input('description');
+
+        if($survey->save()){
+            return $survey;
+        };
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\survey  $survey
-     * @return \Illuminate\Http\Response
+     * @param survey $id
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function show(survey $survey)
+    public function show($id)
     {
-        //
+        return survey::with('questions')->where('id', $id)->get();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\survey  $survey
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(survey $survey)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -80,8 +69,12 @@ class SurveyController extends Controller
      * @param  \App\survey  $survey
      * @return \Illuminate\Http\Response
      */
-    public function destroy(survey $survey)
+    public function destroy($id)
     {
-        //
+        $survey = survey::findOrFail($id);
+
+        if($survey->delete()){
+            return $survey;
+        }
     }
 }

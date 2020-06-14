@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::resource('surveys', 'SurveyController');
+Route::get('user/{id}', 'UserController@ans');
