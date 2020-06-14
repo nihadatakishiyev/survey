@@ -57,9 +57,17 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(Request $request, $id)
     {
-        //
+        $question = findOrFail($id);
+
+        $question->survey_id = $request->input('survey_id');
+        $question->content = $request->input('content');
+        $question->question_type_id = $request->input('question_type_id');
+
+        if ($question->save()){
+            return $question;
+        }
     }
 
     /**

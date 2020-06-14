@@ -10,32 +10,32 @@ class OptionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Option[]|\Illuminate\Database\Eloquent\Collection
      */
     public function index()
     {
-        //
+        $option = Option::all();
+
+        return $option;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Option
      */
     public function store(Request $request)
     {
-        //
+        $option = new Option;
+
+        $option->question_id = $request->input('question_id');
+        $option->content = $request->input('content');
+
+        if($option->save()){
+            return $option;
+        }
     }
 
     /**
@@ -44,21 +44,11 @@ class OptionController extends Controller
      * @param  \App\Option  $option
      * @return \Illuminate\Http\Response
      */
-    public function show(Option $option)
+    public function show($id)
     {
-        //
+        return Option::where('id', $id)->get();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Option  $option
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Option $option)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -67,9 +57,16 @@ class OptionController extends Controller
      * @param  \App\Option  $option
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Option $option)
+    public function update(Request $request, $id)
     {
-        //
+        $option = Option::findOrFail($id);
+
+        $option->question_id = $request->input('question_id');
+        $option->content = $request->input('content');
+
+        if($option->save()){
+            return $option;
+        }
     }
 
     /**
@@ -78,8 +75,12 @@ class OptionController extends Controller
      * @param  \App\Option  $option
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Option $option)
+    public function destroy($id)
     {
-        //
+        $option = Option::findOrFail($id);
+
+        if ($option->delete()){
+            return $option;
+        }
     }
 }

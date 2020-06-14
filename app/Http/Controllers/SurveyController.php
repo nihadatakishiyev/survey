@@ -58,9 +58,17 @@ class SurveyController extends Controller
      * @param  \App\survey  $survey
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, survey $survey)
+    public function update(Request $request, $id)
     {
-        //
+        $survey = survey::findOrFail($id);
+
+        $survey->user_id = $request->input('user_id');
+        $survey->name = $request->input('name');
+        $survey->description = $request->input('description');
+
+        if($survey->save()){
+            return $survey;
+        };
     }
 
     /**

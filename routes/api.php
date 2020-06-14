@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('surveys', 'SurveyController');
 Route::resource('questions', 'QuestionController');
+Route::resource('options', 'OptionController');
 
 
 Route::get('user/{id}', 'UserController@ans');
