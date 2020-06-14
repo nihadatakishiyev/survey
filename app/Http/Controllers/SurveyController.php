@@ -14,7 +14,9 @@ class SurveyController extends Controller
      */
     public function index()
     {
-        //
+        $surveys = survey::with('questions.options')->get();
+
+        return $surveys;
     }
 
     /**

@@ -18,6 +18,7 @@ class CreateAnswersTable extends Migration
             $table->foreignId('question_id')->references('id')->on('questions');
             $table->foreignId('responder_id')->references('id')->on('users');
             $table->foreignId('option_id')->references('id')->on('options');
+            $table->integer('times');
             $table->timestamps();
         });
     }

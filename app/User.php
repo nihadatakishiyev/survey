@@ -40,4 +40,8 @@ class User extends Authenticatable
     public function survey(){
         return $this->hasMany('App\Survey', 'id');
     }
+
+    public function answers(){
+        return $this->hasMany('App\Answer', 'responder_id');
+    }
 }
