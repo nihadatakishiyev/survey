@@ -14,14 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('nicat')->get('/user', function (Request $request) {
+    return "Asd";
 });
-
-
 Route::resource('surveys', 'SurveyController');
 Route::resource('questions', 'QuestionController');
 Route::resource('options', 'OptionController');
+Route::middleware('nicat')->resource('answers', 'AnswerController');
 
 
 Route::get('user/{id}', 'UserController@ans');
+
+Route::get('/token', 'ApiTokenController@update');
