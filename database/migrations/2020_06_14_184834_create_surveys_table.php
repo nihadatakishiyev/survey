@@ -18,6 +18,7 @@ class CreateSurveysTable extends Migration
             $table->foreignId('user_id')->references('id')->on('users');
             $table->string('name');
             $table->text('description');
+            $table->json('data');
             $table->timestamps();
         });
     }

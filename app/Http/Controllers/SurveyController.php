@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\survey;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SurveyController extends Controller
 {
@@ -14,7 +15,7 @@ class SurveyController extends Controller
      */
     public function index()
     {
-        $surveys = survey::with('questions.options')->get();
+        $surveys = survey::all();
 
         return $surveys;
     }
@@ -30,10 +31,11 @@ class SurveyController extends Controller
     {
         $survey = new survey;
 
-        $survey->user_id = $request->input('user_id');
-        $survey->name = $request->input('name');
-        $survey->description = $request->input('description');
-
+        $survey->user_id = Auth::user()->getAuthIdentifier();
+        $survey->name = $request->name;
+        $survey->description = $request->description;
+        $survey->data = json_encode($request->data);
+//        dd($survey);
         if($survey->save()){
             return $survey;
         };
@@ -47,7 +49,7 @@ class SurveyController extends Controller
      */
     public function show($id)
     {
-        return survey::with('questions')->where('id', $id)->get();
+        return survey::find($id);
     }
 
 
@@ -63,8 +65,10 @@ class SurveyController extends Controller
         $survey = survey::findOrFail($id);
 
         $survey->user_id = $request->input('user_id');
+        $survey->survey_id = $request->input('survey_id');
         $survey->name = $request->input('name');
         $survey->description = $request->input('description');
+        $survey->data = $request->input('data');
 
         if($survey->save()){
             return $survey;

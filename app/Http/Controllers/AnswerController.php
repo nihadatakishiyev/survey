@@ -13,19 +13,10 @@ class AnswerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Answer[]|\Illuminate\Database\Eloquent\Collection
      */
     public function index(Request $request)
     {
-//        dd($request);
-//        $user = User::where('api_token', $request->query('api_token'))->get();
-        if(Auth::check()){
-            return Auth::user();
-        }
-        else return 'false';
-
-
-
         return Answer::all();
     }
 
@@ -40,13 +31,9 @@ class AnswerController extends Controller
     {
         $answer = new Answer;
 
-        $answer->question_id = $request->input('question_id');
-        $answer->responder_id = Auth::id();
-        $answer->option_id = $request->input('option_id');
-
-        $query = 'select max(times) from answers where question_id = ' . $answer->question_id . ' and responder_id = ' . Auth::id();
-
-        $answer->times = DB::select($query);
+        $answer->user_id = Auth::id();
+        $answer->survey_id = $request->survey_id;
+        $answer->answer = json_encode($request->answer);
 
         if ($answer->save()){
             return $answer;
@@ -60,9 +47,9 @@ class AnswerController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function show(Answer $answer)
+    public function show($id)
     {
-        //
+        return Answer::findOrFail($id);
     }
 
 
@@ -73,9 +60,17 @@ class AnswerController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Answer $answer)
+    public function update(Request $request, $id)
     {
-        //
+        $answer = Answer::findOrFail($id);
+
+        $answer->user_id = Auth::id();
+        $answer->survey_id = $request->input('survey_id');
+        $answer->answer = $request->input('answer');
+
+        if ($answer->save()){
+            return $answer;
+        }
     }
 
     /**
@@ -84,8 +79,12 @@ class AnswerController extends Controller
      * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Answer $answer)
+    public function destroy($id)
     {
-        //
+        $answer = Answer::findOrFail($id);
+
+        if ($answer->delete()){
+            return $answer;
+        }
     }
 }

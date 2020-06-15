@@ -7,18 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Answer extends Model
 {
     protected $fillable = [
-        'question_id', 'responder_id', 'option_id', 'times'
+        'user_id', 'survey_id', 'answer'
     ];
 
-    public function question(){
-        return $this->belongsTo('App\Question');
-    }
-
-    public function responder(){
+    public function user(){
         return $this->belongsTo('App\User', 'user_id');
     }
 
-    public function option(){
-        return $this->hasOne('App\Option', 'option_id');
+    public function survey(){
+        return $this->belongsTo('App\Survey', 'survey_id');
     }
 }

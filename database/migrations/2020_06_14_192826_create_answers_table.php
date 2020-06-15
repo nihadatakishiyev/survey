@@ -15,10 +15,9 @@ class CreateAnswersTable extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('question_id')->references('id')->on('questions');
-            $table->foreignId('responder_id')->references('id')->on('users');
-            $table->foreignId('option_id')->references('id')->on('options');
-            $table->integer('times');
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('survey_id')->references('id')->on('surveys');
+            $table->json('answer');
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('nicat')->get('/user', function (Request $request) {
     return "Asd";
 });
-Route::resource('surveys', 'SurveyController');
+Route::resource('surveys', 'SurveyController')->middleware('nicat');
 Route::resource('questions', 'QuestionController');
 Route::resource('options', 'OptionController');
 Route::middleware('nicat')->resource('answers', 'AnswerController');
